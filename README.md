@@ -9,6 +9,8 @@ assistant replies so they stand out in long sessions.
   input`, `Your call`): bordered box, text in the theme's `warning` color.
 - Summary sections (`Summary`, `TL;DR`, `Recap`): same, `suggestion` color.
 - The engine's between-tool-call summaries: whole block colored as summary.
+- Subagent blocks (`Agent` tool call row and its result): indented 2 cells,
+  bordered box in the theme's `merged` color.
 
 A section opens on a heading, bold label or plain label matching the above
 and runs to the next heading / bold label or the end of the reply. Labels
@@ -45,7 +47,7 @@ claude plugin test .
 
 ## Layout
 
-- `hooks/register.tsx`: `ui.render` hook on `AssistantMessage`.
+- `hooks/register.tsx`: `ui.render` hooks on `AssistantMessage`, `ToolUse`, `ToolResult`.
 - `hooks/split.ts`: callout detection; label patterns at the top.
 - `hooks/*.test.ts`: suite run by `claude plugin test`.
 
