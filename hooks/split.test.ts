@@ -1,6 +1,6 @@
 import { describe, expect, test } from 'claude-code/testing'
 
-import { plain, split } from './split'
+import { split } from './split'
 
 describe('split', () => {
   test('no callout leaves text whole', async () => {
@@ -25,9 +25,5 @@ describe('split', () => {
 
   test('ignores labels inside code fences', async () => {
     expect(split('```\nSummary of logs\n```').map(p => p.kind)).toEqual(['plain'])
-  })
-
-  test('plain strips bold and heading markers', async () => {
-    expect(plain('## Summary\n**bold** x')).toBe('Summary\nbold x')
   })
 })

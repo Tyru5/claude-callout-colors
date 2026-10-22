@@ -9,13 +9,31 @@ assistant replies so they stand out in long sessions.
   input`, `Your call`): bordered box, text in the theme's `warning` color.
 - Summary sections (`Summary`, `TL;DR`, `Recap`): same, `suggestion` color.
 - The engine's between-tool-call summaries: whole block colored as summary.
-- Subagent blocks (`Agent` tool call row and its result): indented 2 cells,
-  bordered box in the theme's `merged` color.
+- Subagent rows (`Agent` tool call and its result): indented 2 cells behind a
+  left rail `▎` in a per-agent color (hashed from the call id), so a call
+  pairs with its result and parallel agents stay apart. Compact view:
+  - call: `◈ <type> <description>  <model · effort · worktree · @name>`, plus
+    `interrupted` / `failed`; the engine's live progress stays while it runs
+  - result: `✓ 3 tools · 4.2k tok · 3.2s · +4 −1` and the report's first line,
+    or `↻ running in background`
+  - ctrl+o (expanded) and errors: the engine's own rows, on the rail
+  - the engine's folded `N background agents launched` row is not hookable
 
 A section opens on a heading, bold label or plain label matching the above
 and runs to the next heading / bold label or the end of the reply. Labels
 inside code fences are ignored. Text before the first callout keeps the
-engine's own drawing; callout text is drawn plain (bold and `#` stripped).
+engine's own drawing.
+
+Inside a callout:
+
+- Header row: icon (`◆` decision, `≡` summary) + the label as written.
+- Body in normal text color; border, header, bullets, numbers and **bold**
+  runs carry the callout color, so long callouts stay readable.
+- Lists drawn as rows with a hanging indent (wrapped lines align under the
+  text, not the marker); nested lists indent 2 per level; `- [ ]` / `- [x]`
+  become `☐` / `☑`; numbers right-sized to the widest one.
+- Inline `code` and fenced blocks in the theme's code color.
+- Wrapped continuation lines join the item/paragraph above.
 
 Works best when the agent labels sections consistently, e.g. in
 `~/.claude/CLAUDE.md`:
@@ -49,6 +67,8 @@ claude plugin test .
 
 - `hooks/register.tsx`: `ui.render` hooks on `AssistantMessage`, `ToolUse`, `ToolResult`.
 - `hooks/split.ts`: callout detection; label patterns at the top.
+- `hooks/layout.ts`: callout body -> label + blocks (paragraphs, list rows, code).
+- `hooks/subagent.ts`: subagent identity, outcome, per-agent color.
 - `hooks/*.test.ts`: suite run by `claude plugin test`.
 
 ## License

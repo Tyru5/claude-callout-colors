@@ -2,7 +2,7 @@ export type Kind = 'decision' | 'summary'
 export type Part = { kind: 'plain' | Kind; text: string }
 
 // A line opening a callout: heading, bold label, or plain label.
-const OPENER =
+export const OPENER =
   /^\s*(?:#{1,6}\s+|\*\*|__)?\s*(decisions? (?:for you|needed|required)|needs? your (?:decision|input|call)|your (?:call|decision)|summary|tl;?dr|recap)\b/i
 
 // A line that starts a new section, ending the callout before it.
@@ -37,12 +37,4 @@ export function split(text: string): Part[] {
   }
   push()
   return parts
-}
-
-// Markdown markers that read as noise once drawn as plain colored text.
-export function plain(md: string): string {
-  return md
-    .split('\n')
-    .map(l => l.replace(/^(\s*)#{1,6}\s+/, '$1').replace(/\*\*|__/g, ''))
-    .join('\n')
 }
